@@ -1,6 +1,18 @@
 #include <GLFW/glfw3.h>
 #include <GL/gl.h>
 #include <leif/leif.h>
+#include <string.h>
+#include <stdlib.h>
+
+// Define strdup function for compatibility
+char* strdup(const char* str) {
+    size_t len = strlen(str) + 1;
+    char* copy = (char*)malloc(len);
+    if (copy) {
+        memcpy(copy, str, len);
+    }
+    return copy;
+}
 
 typedef enum {
     ALL = 0,
@@ -15,42 +27,16 @@ typedef struct task_entry {
     struct task_entry* next;  // Pointer to the next task entry
 } task_entry;
 
-
 #define WIN_MARGIN 20.0f
 
 static int winw = 1280, winh = 720;
-static LfFont titlefont,smallfont;
-static entry_filter current_filter;
-static task_entry* entries[1024];
-static uint32_t numentries = 0;
-
+static LfFont titlefont, smallfont;
+static entry_filter current_filter = ALL;
+static task_entry* head = NULL;  // Head of the linked list
 static LfTexture removetexture;
 
-// Topbar function
-static void Topbar() {
-    lf_push_font(&titlefont);
-    lf_text("Todo-App");
-    lf_pop_font();
-
-    const float width = 140.0f;
-    lf_set_ptr_x_absolute(winw - width - WIN_MARGIN * 3.0f);
-    LfUIElementProps props = lf_get_theme().button_props;
-    props.margin_left = 0.0f;
-    props.margin_right = 0.0f;
-    props.color = (LfColor){65, 167, 204, 255};
-    props.border_width = 0.0f;
-    props.corner_radius = 4.0f;
-    lf_push_style_props(props);
-    lf_set_line_should_overflow(false);
-    lf_button_fixed("Add Task", width, -1);
-    lf_set_line_should_overflow(true);
-    lf_pop_style_props();
-}
-
-
-
-static task_entry* head = NULL;  // Head of the linked list
-
+// Declare the Topbar function before main
+static void Topbar();
 
 // Function to add a new task entry to the linked list
 static void add_task(const char* desc, const char* date) {
@@ -69,12 +55,9 @@ static void add_task(const char* desc, const char* date) {
         }
         last->next = new_entry;  // Append to the end of the list
     }
-    numentries++;
 }
 
-
-
-
+// Function to delete a task entry
 void delete_task(task_entry* task_to_delete) {
     if (head == NULL || task_to_delete == NULL) return;
 
@@ -85,7 +68,6 @@ void delete_task(task_entry* task_to_delete) {
         free(temp->desc);
         free(temp->date);
         free(temp);
-        numentries--;
         return;
     }
 
@@ -101,13 +83,10 @@ void delete_task(task_entry* task_to_delete) {
         free(temp->desc);
         free(temp->date);
         free(temp);
-        numentries--;
     }
 }
 
-
-
-// Function to categorize tasks
+// Function to categorize tasks based on filter
 static void categorize() {
     const uint32_t filter_count = 3;
     static const char* filter_options[] = {"All", "Pending", "Completed"};
@@ -148,6 +127,27 @@ static void categorize() {
         lf_pop_style_props();
     }
     lf_set_line_should_overflow(true);
+}
+
+// Topbar function
+static void Topbar() {
+    lf_push_font(&titlefont);
+    lf_text("Todo-App");
+    lf_pop_font();
+
+    const float width = 140.0f;
+    lf_set_ptr_x_absolute(winw - width - WIN_MARGIN * 3.0f);
+    LfUIElementProps props = lf_get_theme().button_props;
+    props.margin_left = 0.0f;
+    props.margin_right = 0.0f;
+    props.color = (LfColor){65, 167, 204, 255};
+    props.border_width = 0.0f;
+    props.corner_radius = 4.0f;
+    lf_push_style_props(props);
+    lf_set_line_should_overflow(false);
+    lf_button_fixed("Add Task", width, -1);
+    lf_set_line_should_overflow(true);
+    lf_pop_style_props();
 }
 
 // Main function
@@ -191,63 +191,78 @@ int main() {
         categorize();
         lf_next_line();
 
-        // Loop through each task entry in the linked list
-        for (task_entry* entry = head; entry != NULL; entry = entry->next) {
-            // Delete button for each entry
-            {
-                LfUIElementProps props = lf_get_theme().button_props;
-                props.color = LF_NO_COLOR;
-                props.border_width = 0.0f;
-                props.padding = 0.0f;
-                props.margin_top = 30.0f;
-                props.margin_left = 40.0f;
-                lf_push_style_props(props);
+        // Check if there are no tasks
+        if (head == NULL) {
+            // Display "No tasks added"
+            LfUIElementProps props = lf_get_theme().text_props;
+            props.margin_top = 30.0f;
+            props.margin_left = 10.0f;
+            props.text_color = LF_WHITE;
+            lf_push_style_props(props);
+            lf_text("No tasks added");
+            lf_pop_style_props();
+        } else {
+            // Loop through each task entry in the linked list
+            for (task_entry* entry = head; entry != NULL; entry = entry->next) {
+                // Only display tasks based on the current filter
+                if (current_filter == ALL || (current_filter == PENDING && !entry->completed) || (current_filter == COMPLETED && entry->completed)) {
+                    // Delete button for each entry
+                    {
+                        LfUIElementProps props = lf_get_theme().button_props;
+                        props.color = LF_NO_COLOR;
+                        props.border_width = 0.0f;
+                        props.padding = 0.0f;
+                        props.margin_top = 30.0f;
+                        props.margin_left = 40.0f;
+                        lf_push_style_props(props);
 
-                if (lf_image_button(((LfTexture){.id = removetexture.id, .width = 20, .height = 20})) == LF_CLICKED) {
-                    delete_task(entry);  // Call delete function when the button is clicked
-                    break;  // Exit after deleting to avoid accessing deleted memory
+                        if (lf_image_button(((LfTexture){.id = removetexture.id, .width = 20, .height = 20})) == LF_CLICKED) {
+                            delete_task(entry);  // Call delete function when the button is clicked
+                            break;  // Exit after deleting to avoid accessing deleted memory
+                        }
+
+                        lf_pop_style_props();
+                    }
+
+                    // Checkbox for each entry
+                    {
+                        LfUIElementProps props = lf_get_theme().checkbox_props;
+                        props.border_width = 1.0f;
+                        props.corner_radius = 0;
+                        props.margin_top = 30;
+                        props.padding = 5.0f;
+                        props.margin_left = 5.0f;
+                        props.color = LF_BLACK;
+                        lf_push_style_props(props);
+                        if (lf_checkbox("", &entry->completed, LF_NO_COLOR, ((LfColor){65, 167, 204, 255})) == LF_CLICKED) {
+                            // Checkbox click logic here
+                        }
+                        lf_pop_style_props();
+                    }
+
+                    // Display entry description and date
+                    lf_push_font(&smallfont);
+                    {
+                        LfUIElementProps props = lf_get_theme().text_props;
+                        props.margin_top = 30.0f;
+                        props.margin_left = 5.0f;
+                        props.text_color = LF_WHITE;
+                        lf_push_style_props(props);
+
+                        float descptr_x = lf_get_ptr_x();
+                        lf_text(entry->desc);
+
+                        lf_set_ptr_x_absolute(descptr_x);
+                        lf_set_ptr_y_absolute(lf_get_ptr_y() + smallfont.font_size);
+                        props.text_color = (LfColor){150, 150, 150, 255};
+                        lf_push_style_props(props);
+                        lf_text(entry->date);
+                        lf_next_line();
+                        lf_pop_style_props();
+                    }
+                    lf_pop_font();
                 }
-
-                lf_pop_style_props();
             }
-
-            // Checkbox for each entry
-            {
-                LfUIElementProps props = lf_get_theme().checkbox_props;
-                props.border_width = 1.0f;
-                props.corner_radius = 0;
-                props.margin_top = 30;
-                props.padding = 5.0f;
-                props.margin_left = 5.0f;
-                props.color = LF_BLACK;
-                lf_push_style_props(props);
-                if (lf_checkbox("", &entry->completed, LF_NO_COLOR, ((LfColor){65, 167, 204, 255})) == LF_CLICKED) {
-                    // Checkbox click logic here
-                }
-                lf_pop_style_props();
-            }
-
-            // Display entry description and date
-            lf_push_font(&smallfont);
-            {
-                LfUIElementProps props = lf_get_theme().text_props;
-                props.margin_top = 30.0f;
-                props.margin_left = 5.0f;
-                props.text_color = LF_WHITE;
-                lf_push_style_props(props);
-
-                float descptr_x = lf_get_ptr_x();
-                lf_text(entry->desc);
-
-                lf_set_ptr_x_absolute(descptr_x);
-                lf_set_ptr_y_absolute(lf_get_ptr_y() + smallfont.font_size);
-                props.text_color = (LfColor){150, 150, 150, 255};
-                lf_push_style_props(props);
-                lf_text(entry->date);
-                lf_next_line();
-                lf_pop_style_props();
-            }
-            lf_pop_font();
         }
 
         lf_div_end();
@@ -257,20 +272,7 @@ int main() {
         glfwPollEvents();
     }
 
-    // Free all allocated memory for task entries
-    task_entry* current = head;
-    while (current != NULL) {
-        task_entry* temp = current;
-        current = current->next;
-        free(temp->desc);
-        free(temp->date);
-        free(temp);
-    }
-
-    lf_free_font(&titlefont);
-    lf_free_font(&smallfont);
     glfwDestroyWindow(window);
     glfwTerminate();
-
     return 0;
 }
