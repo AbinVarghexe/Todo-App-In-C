@@ -31,7 +31,7 @@ This is a simple Todo application written in C. It is designed to be run on a Li
 
 ## Usage
 
-Run the application:
+Run the application;
 ```sh
 gcc -o todo todo.c -lglfw -lGL -lleif -lclipboard -lm -lxcb
 ./todo
@@ -44,3 +44,4 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 ## License
 
 This project is licensed under the MIT License.
+Adhithya Rajesh
