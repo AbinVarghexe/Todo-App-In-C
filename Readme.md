@@ -1,6 +1,6 @@
-# Todo-new-app Using C 🚀
+****# Todo-new-app Using C 🚀
 
-This will only run on a Linux machine 🐧
+****This will only run on a Linux machine 🐧****
 This project contains the Todo-new-app C program, which integrates the leif library. Follow the instructions below to set up the project and install the necessary dependencies.
 
 This Todo app uses C, OpenGL (via GLFW), and Leif (a lightweight UI framework) to provide a GUI for managing tasks.
@@ -12,7 +12,6 @@ Below are some screenshots of the Todo-new-app in action:
 - **Task List View**:
 
   ![1731266201874](images/1731266201874.png)
-
 - **Adding a New Task**:
 
   ![1731266080148](images/1731266080148.png)
