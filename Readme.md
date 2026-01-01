@@ -1,7 +1,5 @@
 <div align="center">
 
-<br><br>
-
 # 📝 Todo App
 
 <br>
@@ -10,7 +8,7 @@
 <br />
 <sub>Lightning-fast task management with a modern interface — all powered by native C.</sub>
 
-<br><br>
+
 
   <a href="https://github.com/AbinVarghexe/Todo-App-In-C">
     <img alt="Linux Only" src="https://img.shields.io/badge/Platform-Linux%20Only-FCC624?logo=linux&logoColor=black">
@@ -25,6 +23,7 @@
     <img alt="License" src="https://img.shields.io/badge/License-MIT-blue">
   </a>
 
+<br>
 <br>
 
 <a href="docs/DOCUMENTATION.md">📖 Documentation</a> ·
