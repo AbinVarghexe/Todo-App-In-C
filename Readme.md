@@ -1,160 +1,167 @@
-# Todo-new-app Using C 🚀
+<div align="center">
 
-## ****This will only run on a Linux machine 🐧****
+# 📝 Todo-new-app
 
-This project contains the Todo-new-app C program, which integrates the leif library. Follow the instructions below to set up the project and install the necessary dependencies.
+A lightweight task management app built with C and OpenGL
 
-This Todo app uses C, OpenGL (via GLFW), and Leif (a lightweight UI framework) to provide a GUI for managing tasks.
+[![C](https://img.shields.io/badge/C-00599C?logo=c&logoColor=white)](https://en.wikipedia.org/wiki/C_(programming_language))
+[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://www.linux.org/)
+[![OpenGL](https://img.shields.io/badge/OpenGL-5586A4?logo=opengl&logoColor=white)](https://www.opengl.org/)
+[![GLFW](https://img.shields.io/badge/GLFW-3.3-blue)](https://www.glfw.org/)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-### Screenshots 📸
+</div>
 
-Below are some screenshots of the Todo-new-app in action:
+> **⚠️ Linux Only** - This application runs exclusively on Linux systems
 
-- **Task List View**:
+## Overview
 
-  ![1731266201874](images/1731266201874.png)
-- **Adding a New Task**:
+A high-performance todo app using C, OpenGL, GLFW, and the Leif UI framework for task management with a modern GUI.
 
-  ![1731266080148](images/1731266080148.png)
+## Features
 
-## Key Features: 🌟
+- ✅ Add, delete, and complete tasks
+- 🔍 Filter tasks (All, Pending, Completed)
+- ⚡ Real-time UI updates
+- 📋 Linked list data structure
+- 🎨 Interactive UI with Leif framework
 
-- **Task Data Structure**: Tasks are stored in a linked list (task_entry), each with a description, date, and completion status.
-- **UI Elements**: The interface includes buttons for adding and deleting tasks, input fields for task descriptions, and checkboxes for marking completion. 👍
-- **Task Filtering**: Tasks can be filtered (All, Pending, Completed) with dynamic rendering. 🔄
-- **Main Loop**: The app updates the UI based on user interactions and handles task management (add, delete, and filter tasks).
-- The app provides a simple, efficient way to manage tasks with a flexible UI and backend structure.
+## Screenshots
 
-## Project Setup 🔧
+| Task List View | Adding New Task |
+|----------------|-----------------|
+| ![Task List](images/1731266201874.png) | ![Add Task](images/1731266080148.png) |
 
-### Prerequisites 📋
+## 📦 Installation
 
-Ensure you have the following installed:
+### Prerequisites
 
-- Git
-- Make (or CMake if applicable)
-- GCC or another C compiler
-- GLFW, OpenGL, Leif, clipboard, and xcb libraries
+Before you begin, ensure you have the following installed on your Linux system:
 
-### Clone the Repository 📂
+```bash
+# Debian/Ubuntu
+sudo apt-get update
+sudo apt-get install build-essential git make gcc libglfw3-dev libgl1-mesa-dev libxcb1-dev
 
-Clone the Todo-new-app repository and install the dependencies:
+# Fedora
+sudo dnf install gcc git make glfw-devel mesa-libGL-devel libxcb-devel
+
+# Arch Linux
+sudo pacman -S base-devel git make gcc glfw-ogl mesa libxcb
+```
+Installation
+
+### Quick Start
 
 ```bash
 git clone https://github.com/AbinVarghexe/Todo-new-app.git
 cd Todo-new-app
-```
-
-### Running the Installation Script 🚦
-
-To automatically install the necessary dependencies and set up the project, run the install.sh script:
-
-```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-This script will:
+### Manual Install
 
-- Clone the Todo-new-app repository.
-- Install any C dependencies using make (or cmake if configured).
-- Clone the leif repository.
-- Install leif and set it up for use with your project.
+```bash
+# Install dependencies (Debian/Ubuntu)
+sudo apt-get install build-essential libglfw3-dev libgl1-mesa-dev libxcb1-dev
 
-### Installation Steps in the Script 📜
+# Clone and build
+git clone https://github.com/AbinVarghexe/Todo-new-app.git
+cd Todo-new-app
+make
 
-The install.sh script performs the following actions:
+# Install Leif
+git clone https://github.com/cococry/leif.git
+cd leif && make && sudo make install && cd ..
 
-- **Clones the Todo App repository**:
+# Compile--|-------------|
+| **Add Task** | Click the "Add" button and enter task description |
+| **Complete Task** | Check the checkbox next to the task |
+| **Delete Task** | Click the delete button on the task |
+| **Filter Tasks** | Use filter buttons (All/Pending/Completed) |
 
-  ```bash
-  git clone https://github.com/AbinVarghexe/Todo-new-app.git
-  ```
-- **Navigates into the Todo App directory**:
+### Command-line Compilation
 
-  ```bash
-  cd Todo-new-app
-  ```
-- **Installs the necessary C dependencies using make**:
-
-  ```bash
-  make
-  ```
-- **Clones the Leif repository**:
-
-  ```bash
-  git clone https://github.com/cococry/leif.git
-  ```
-- **Navigates to the Leif directory and installs it**:
-
-  ```bash
-  cd leif
-  make
-  ```
-- **Links or copies the Leif library to the project directory**:
-
-  ```bash
-  cd ..
-  cp -r leif /path/to/your/project/directory
-  ```
-
-## Building and Running the Application 🚀
-
-After completing the installation, you can build and run the Todo-new-app using the following commands:
+For custom builds or modifications:
 
 ```bash
 gcc -o todo todo.c -lglfw -lGL -lleif -lclipboard -lm -lxcb
+```
+
+**Linked Libraries:**
+- `-lglfw` - GLFW library
+- `-lGL` - OpenGL library
+- `-lleif` - Leif UI framework
+- `-lclipboard` - Clipboard functionality
+- `-lm` - Math library
+- `-lxcb` - X protocol library
+
+## 📁 Project Structure
+
+```
+Todo-new-app/
+├──Usage
+
+Run the application:
+
+```bash
 ./todo
 ```
 
-This will compile the todo.c file, linking it with necessary libraries such as glfw, GL, leif, clipboard, math, and xcb, and then run the resulting Todo application. 🏃‍♂️💻
+### Testing Logic Module
 
-## Todo App Logic Implementation
+```bash
+cd logic
+gcc logic.c -o logic
+./logic
+```
+- ✅ Follow C coding standards
+- ✅ Add comments for complex logic
+- ✅ Test on Linux before submitting
+- ✅ Update documentation as needed
+- ✅ Keep commits atomic and descriptive
 
-### Overview
+## 📄 License
 
-The logic.c file contains the core logic for the Todo app. It handles the task management system, including adding, deleting, and filtering tasks. To run and test the logic, follow the instructions below.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Running the Logic File
+## 🙏 Acknowledgments
 
-#### Prerequisites
+- **[Leif](https://github.com/cococry/leif)** - For the excellent lightweight UI framework
+- **GLFW Team** - For cross-platform OpenGL window management
+- **Contributors** - Thank you to all who have contributed to this project!
 
-You need to have GCC (GNU Compiler Collection) installed on your system.
-Navigate to the root directory of your project where the Todo-new-app folder is located.
+---
 
-#### Steps to Run the Logic
+<div align="center">
 
-- **Navigate to the logic folder**:
-  Open a terminal and change your directory to the folder containing the logic.c file. Assuming you are starting from the root project directory:
+**Made with ❤️ using C and OpenGL**
 
-  ```bash
-  cd Todo-new-app/logic
-  ```
-- **Compile the logic.c file**:
-  Use the gcc command to compile the logic.c file:
+[⬆ Back to Top](#-todo-new-app)
 
-  ```bash
-  gcc logic.c -o logic
-  ```
-- **Run the compiled program**:
-  After successful compilation, run the program with the following command:
+</div>
+Contributing
 
-  ```bash
-  ./logic
-  ```
+Contributions are welcome! 
 
-This will execute the logic in the logic.c file and allow you to interact with the task management system.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## Contributions 🙌
+## License
 
-We welcome contributions! If you'd like to contribute to the development of Todo-new-app, feel free to fork the repository and submit a pull request.
+MIT License - see [LICENSE](LICENSE) file for details.
 
-### Steps to Contribute:
+## Acknowledgments
 
-1. Fork the repository.
-2. Create a new branch for your feature.
-3. Commit your changes.
-4. Push to your forked repository.
-5. Create a pull request.
+- [Leif](https://github.com/cococry/leif) - Lightweight UI framework
+- GLFW Team - OpenGL window management
 
-Thank you for helping improve the project! 💡
+---
+
+<div align="center">
+
+Made with ❤️ using C and OpenGL
