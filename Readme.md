@@ -138,6 +138,8 @@ sudo pacman -S base-devel glfw-ogl mesa libxcb
 
 ## 🎯 Core Features
 
+<div align="center">
+
 <table>
 <tr>
 <td width="50%">
@@ -180,6 +182,8 @@ sudo pacman -S base-devel glfw-ogl mesa libxcb
 </tr>
 </table>
 
+</div>
+
 ---
 
 ## 👥 Contributors
@@ -199,43 +203,6 @@ A big thank you to all contributors who have helped make Todo App better! 🎉
 <div align="center">
   <sub>Made with <a href="https://contrib.rocks">contrib.rocks</a></sub>
 </div>
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Whether it's bug fixes, new features, or documentation improvements.
-
-**Quick Steps:**
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add: AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-**Guidelines:**
-- ✅ Follow C coding standards
-- ✅ Test on Linux before submitting
-- ✅ Add comments for complex logic
-- ✅ Update documentation as needed
-- ✅ Keep commits atomic and descriptive
-
-📖 See [DOCUMENTATION.md](docs/DOCUMENTATION.md) for detailed contribution guidelines
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **[Leif](https://github.com/cococry/leif)** — Excellent lightweight UI framework
-- **GLFW Team** — Cross-platform window management
-- **OpenGL Community** — Graphics rendering support
 
 ---
 
